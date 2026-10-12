@@ -34,11 +34,36 @@ function calculateServiceCost() {
     document.getElementById("serviceCount").textContent = count;
 }
 
+function toggleOtherServices() {
+    const fullServiceCheckbox = document.getElementById("fullServiceCheckbox");
+    const otherServiceCheckboxes = document.querySelectorAll(
+        'input[name="services[]"]:not(#fullServiceCheckbox)'
+    );
+
+    if (fullServiceCheckbox.checked) {
+        otherServiceCheckboxes.forEach(function(checkbox) {
+            checkbox.disabled = true;
+            checkbox.checked = false; 
+        });
+    } else {
+        otherServiceCheckboxes.forEach(function(checkbox) {
+            checkbox.disabled = false;
+        });
+    }
+    calculateServiceCost(); 
+}
+
 document.querySelectorAll('input[name="services[]"]').forEach(
     function(service) {
         service.addEventListener("change", calculateServiceCost);
     }
 );
+
+const fullServiceCheckbox = document.getElementById("fullServiceCheckbox");
+if (fullServiceCheckbox) {
+    fullServiceCheckbox.addEventListener("change", toggleOtherServices);
+}
+
 function validateServiceForm() {
     const name = document.getElementById("customer_name").value.trim();
     const phone = document.getElementById("phone").value.trim();
